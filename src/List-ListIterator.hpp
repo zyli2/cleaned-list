@@ -3,19 +3,16 @@ class ListIterator : public std::iterator<std::bidirectional_iterator_tag, T> {
   private:
     // @TODO: graded in MP3.1
     ListNode* position_;
-    int count = 0;
 
   public:
     ListIterator() : position_(NULL) { }
     ListIterator(ListNode* x) : position_(x) { }
-    ListIterator(ListNode* position, int val): position_(position), count(val) {}
 
 
     // Pre-Increment, ++iter
     ListIterator& operator++() {
         // @TODO: graded in MP3.1
         if (position_->next == NULL) {
-            ++count;
             position_ = NULL;
             return *this;
         }
@@ -29,7 +26,6 @@ class ListIterator : public std::iterator<std::bidirectional_iterator_tag, T> {
         // @TODO: graded in MP3.1
         ListNode* temp = position_;
         if (position_->next == NULL) {
-            ++count;
             position_ = NULL;
             return ListIterator(temp);
         }
@@ -41,7 +37,6 @@ class ListIterator : public std::iterator<std::bidirectional_iterator_tag, T> {
     ListIterator& operator--() {
         ListNode* temp = position_;
         position_ = position_->prev;
-        --count;
         return *this;
     }
 
@@ -49,16 +44,15 @@ class ListIterator : public std::iterator<std::bidirectional_iterator_tag, T> {
     ListIterator operator--(int) {
         ListNode* temp = position_;
         position_ = position_->prev;
-        --count;
         return ListIterator(temp);
     }
 
     bool operator!=(const ListIterator& rhs) {
-        return (count != rhs.count);
+        return (position_ != rhs.position_);
     }
 
     bool operator==(const ListIterator& rhs) {
-        return !(count != rhs.count);
+        return !(position_ != rhs.position_);
     }
 
     const T& operator*() {

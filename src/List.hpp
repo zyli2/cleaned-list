@@ -28,7 +28,7 @@ typename List<T>::ListIterator List<T>::begin() const {
 template <typename T>
 typename List<T>::ListIterator List<T>::end() const {
   // @TODO: graded in MP3.1
-  return List<T>::ListIterator(tail_, true);
+  return List<T>::ListIterator(NULL);
 }
 
 
@@ -124,13 +124,13 @@ void List<T>::insertBack(const T & ndata) {
 template <typename T>
 typename List<T>::ListNode * List<T>::split(ListNode * start, int splitPoint) {
   /// @todo Graded in MP3.1
-  if (splitPoint == length_) {
+  if (splitPoint == length_ || splitPoint == 0) {
     return NULL;
   }
 
   ListNode * curr = start;
 
-  for (int i = 0; i < splitPoint; i++) {
+  for (int i = 0; i < splitPoint; ++i) {
     curr = curr->next;
   }
 
@@ -167,9 +167,9 @@ void List<T>::tripleRotate() {
   while (curr != NULL) {
     after = curr->next;
     if (count == 3 ) {
-    third = curr;
-    first = curr->prev->prev;
-    middle = curr->prev;
+      third = curr;
+      first = curr->prev->prev;
+      middle = curr->prev;
 
       // setup first node
       middle->prev = first->prev;
@@ -186,16 +186,16 @@ void List<T>::tripleRotate() {
       third->prev = middle;
       third->next = first;
 
-      curr = first;
       head_= middle;
 
-    } else if (count % 3 == 0) {
+    } else if (count != 3 && count % 3 == 0) {
       third = curr;
       first = curr->prev->prev;
       middle = curr->prev;
       
       // setup first node
       middle->prev = first->prev;
+      first->prev->next = middle;
       first->prev = third;
       first->next = third->next;
       if (third->next != NULL) {
@@ -209,7 +209,6 @@ void List<T>::tripleRotate() {
       third->prev = middle;
       third->next = first;
 
-      curr = first;
       // change tail if length is even and at the end
       if (count == length_) {
         tail_ = first;
